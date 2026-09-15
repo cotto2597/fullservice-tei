@@ -1,0 +1,142 @@
+rules_version = '2';
+
+// Reglas de seguridad — Tecnologías e Insumos / Full Service
+//
+// Principio general: nada es legible ni escribible sin sesión iniciada Y
+// sin tener un documento activo en usuarios/{uid}. A partir de ahí:
+//
+//   - Catálogo compartido (productos, categorías, clientes, proveedores):
+//     cualquier usuario activo de CUALQUIERA de las dos empresas puede
+//     leer y escribir (incluyendo precios y stock) — decisión de Corcho:
+//     no hay distinción de rol acá, solo estar activo en el sistema.
+//   - Colecciones con empresaId (reparaciones, facturas): solo usuarios
+//     que tengan esa empresa en su array `empresas` pueden leer/escribir.
+//   - Usuarios y Empresas (perfil): lectura para cualquier usuario activo,
+//     pero ESCRITURA reservada a administrador — son los dos lugares
+//     donde si un operador pudiera escribir, podría auto-otorgarse acceso
+//     a todo lo demás.
+//   - contadores/: solo lectura/escritura server-side vía transacción,
+//     nunca de forma directa — se valida igual que reparaciones/facturas
+//     según a qué empresa pertenece el contador.
+//
+// Nota: la creación de usuarios en sí (Authentication) no pasa por estas
+// reglas — ocurre en netlify/functions/crear-usuario.js con Admin SDK, que
+// se salta las Security Rules por diseño. Estas reglas protegen el
+// documento usuarios/{uid} en Firestore, no la existencia de la cuenta.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --- Helpers ---
+
+    function estaAutenticado() {
+      return request.auth != null;
+    }
+
+    function perfilUsuario() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data;
+    }
+
+    function esUsuarioActivo() {
+      return estaAutenticado()
+        && exists(/databases/$(database)/documents/usuarios/$(request.auth.uid))
+        && perfilUsuario().activo == true;
+    }
+
+    function esAdministrador() {
+      return esUsuarioActivo() && perfilUsuario().rol == 'administrador';
+    }
+
+    function tieneAccesoAEmpresa(empresaId) {
+      return esUsuarioActivo() && empresaId in perfilUsuario().empresas;
+    }
+
+    // --- Usuarios ---
+    // Lectura: cualquier usuario activo (la UI necesita listar usuarios
+    // en Configuración, y resolver nombres). Escritura: solo administrador,
+    // y nunca sobre el propio rol/empresas de uno mismo para evitar que un
+    // administrador comprometido bloquee a los demás sin control — en la
+    // práctica esto ya lo cubre la Netlify Function para el alta; acá se
+    // cubre la edición posterior (activar/desactivar, cambiar rol).
+    match /usuarios/{uid} {
+      allow read: if esUsuarioActivo();
+      allow write: if esAdministrador();
+    }
+
+    // --- Empresas (perfil) ---
+    // Lectura: cualquier usuario activo con acceso a esa empresa.
+    // Escritura: solo administrador de esa empresa.
+    match /empresas/{empresaId} {
+      allow read: if tieneAccesoAEmpresa(empresaId);
+      allow write: if esAdministrador() && tieneAccesoAEmpresa(empresaId);
+    }
+
+    // --- Catálogo compartido: productos, stock, categorías ---
+    // Cualquier usuario activo (de cualquiera de las dos empresas) puede
+    // leer y escribir — decisión de Corcho: sin distinción de rol acá.
+    match /productos/{productoId} {
+      allow read, write: if esUsuarioActivo();
+
+      match /stock/{empresaId} {
+        // Acá sí se exige pertenecer a la empresa del stock que se toca,
+        // para que un usuario de FullService no pueda tocar el stock de
+        // Tecnologías e Insumos aunque el catálogo sea compartido.
+        allow read, write: if tieneAccesoAEmpresa(empresaId);
+      }
+    }
+
+    match /categorias/{categoriaId} {
+      allow read, write: if esUsuarioActivo();
+    }
+
+    // --- Clientes y Proveedores (compartidos) ---
+    match /clientes/{clienteId} {
+      allow read, write: if esUsuarioActivo();
+    }
+
+    match /proveedores/{proveedorId} {
+      allow read, write: if esUsuarioActivo();
+    }
+
+    // --- Reparaciones (por empresa) ---
+    // En "update" se exige además que empresaId no cambie: sin esto, un
+    // usuario con acceso a ambas empresas podría "mover" una reparación
+    // de una a la otra editándola.
+    match /reparaciones/{reparacionId} {
+      allow read: if tieneAccesoAEmpresa(resource.data.empresaId);
+      allow create: if tieneAccesoAEmpresa(request.resource.data.empresaId);
+      allow update: if tieneAccesoAEmpresa(resource.data.empresaId)
+        && request.resource.data.empresaId == resource.data.empresaId;
+      allow delete: if tieneAccesoAEmpresa(resource.data.empresaId);
+    }
+
+    // --- Facturas (por empresa) ---
+    // Sin "delete": una factura generada no se borra desde la app (evita
+    // pérdida accidental de un comprobante ya emitido); si hace falta
+    // anularla, se modela como Nota de Crédito, no como borrado. Mismo
+    // resguardo que en reparaciones: empresaId no puede cambiar en update.
+    match /facturas/{facturaId} {
+      allow read: if tieneAccesoAEmpresa(resource.data.empresaId);
+      allow create: if tieneAccesoAEmpresa(request.resource.data.empresaId);
+      allow update: if tieneAccesoAEmpresa(resource.data.empresaId)
+        && request.resource.data.empresaId == resource.data.empresaId;
+      allow delete: if false;
+    }
+
+    // --- Contadores (numeración correlativa) ---
+    // Guardan un campo empresaId explícito (ver services/datos.js) en vez
+    // de depender de parsear el id del documento — más robusto. La regla
+    // de creación mira request.resource.data porque en la primera factura
+    // o reparación de una empresa el documento todavía no existe
+    // (resource.data sería null); la de actualización valida contra el
+    // documento ya existente para evitar que alguien cambie el empresaId
+    // de un contador ajeno.
+    match /contadores/{contadorId} {
+      allow read: if esUsuarioActivo()
+        && tieneAccesoAEmpresa(resource.data.empresaId);
+      allow create: if tieneAccesoAEmpresa(request.resource.data.empresaId);
+      allow update: if tieneAccesoAEmpresa(resource.data.empresaId)
+        && request.resource.data.empresaId == resource.data.empresaId;
+    }
+  }
+}

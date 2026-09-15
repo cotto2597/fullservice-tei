@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tecnologías e Insumos / Full Service</title>
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ===================== PANTALLA DE LOGIN ===================== -->
+  <div id="pantalla-login" class="pantalla-login">
+    <form id="form-login" class="superficie login-tarjeta">
+      <h1 class="login-titulo">Iniciar sesión</h1>
+      <p class="login-subtitulo">Full Service &middot; Tecnologías e Insumos</p>
+
+      <div class="campo">
+        <label for="login-email">Email</label>
+        <input type="email" id="login-email" required autocomplete="username" />
+      </div>
+
+      <div class="campo">
+        <label for="login-contrasena">Contraseña</label>
+        <input type="password" id="login-contrasena" required autocomplete="current-password" />
+      </div>
+
+      <p id="login-error" class="login-error" hidden></p>
+
+      <button type="submit" class="btn btn-primario login-boton">Ingresar</button>
+    </form>
+  </div>
+
+  <!-- ===================== SHELL PRINCIPAL DE LA APP ===================== -->
+  <div id="app-shell" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-marca">
+        <div>
+          <div class="sidebar-marca-nombre">InfoStock</div>
+          <div class="sidebar-marca-empresa" id="sidebar-empresa-nombre">—</div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav">
+        <a href="#inicio" class="sidebar-link" data-vista="inicio">Inicio</a>
+        <a href="#facturacion" class="sidebar-link" data-vista="facturacion">Facturación</a>
+        <a href="#productos" class="sidebar-link" data-vista="productos">Productos</a>
+        <a href="#reparaciones" class="sidebar-link" data-vista="reparaciones">Reparaciones</a>
+        <a href="#configuracion" class="sidebar-link" data-vista="configuracion">Configuración</a>
+      </nav>
+
+      <div class="sidebar-pie">
+        <div class="sidebar-usuario">
+          <div>
+            <div class="sidebar-usuario-nombre" id="sidebar-usuario-nombre">—</div>
+            <div class="sidebar-usuario-rol" id="sidebar-usuario-rol">—</div>
+          </div>
+          <button id="boton-cerrar-sesion" class="btn-icono" title="Cerrar sesión" type="button">⏻</button>
+        </div>
+      </div>
+    </aside>
+
+    <div class="contenido">
+      <header class="contenido-header">
+        <h2 id="titulo-vista">Inicio</h2>
+        <div id="selector-empresa-contenedor"></div>
+      </header>
+
+      <main class="contenido-body" id="vista-contenido">
+        <!-- Cada vista se renderiza acá dinámicamente -->
+      </main>
+    </div>
+  </div>
+
+  <style>
+    /* Estilos propios de la pantalla de login, no reutilizables en otro lado */
+    .pantalla-login {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-sidebar-fondo);
+      padding: var(--espacio-4);
+    }
+    .login-tarjeta {
+      width: 100%;
+      max-width: 380px;
+      padding: var(--espacio-6);
+    }
+    .login-titulo {
+      margin-bottom: var(--espacio-1);
+    }
+    .login-subtitulo {
+      color: var(--color-texto-suave);
+      font-size: var(--texto-sm);
+      margin-bottom: var(--espacio-5);
+    }
+    .login-boton {
+      width: 100%;
+      justify-content: center;
+      margin-top: var(--espacio-2);
+    }
+    .login-error {
+      color: var(--color-estado-inactivo);
+      font-size: var(--texto-sm);
+      margin-bottom: var(--espacio-3);
+    }
+  </style>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
