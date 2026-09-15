@@ -1,0 +1,152 @@
+/* Layout general: sidebar fija + contenido */
+
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+  width: var(--ancho-sidebar);
+  flex-shrink: 0;
+  background: var(--color-sidebar-fondo);
+  color: var(--color-sidebar-texto);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+
+.sidebar-marca {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  padding: var(--espacio-5) var(--espacio-4);
+  border-bottom: 1px solid var(--color-sidebar-borde);
+}
+
+.sidebar-marca-nombre {
+  font-weight: 700;
+  font-size: var(--texto-md);
+  color: #fff;
+  line-height: 1.2;
+}
+
+.sidebar-marca-empresa {
+  font-size: var(--texto-xs);
+  color: var(--color-texto-tenue);
+}
+
+.sidebar-nav {
+  flex: 1;
+  padding: var(--espacio-4) var(--espacio-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-1);
+  overflow-y: auto;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-3);
+  padding: var(--espacio-3) var(--espacio-3);
+  border-radius: var(--radio-sm);
+  color: var(--color-sidebar-texto);
+  font-size: var(--texto-sm);
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+
+.sidebar-link:hover {
+  background: var(--color-sidebar-hover);
+  text-decoration: none;
+  color: var(--color-sidebar-texto-activo);
+}
+
+.sidebar-link.activo {
+  background: var(--color-acento);
+  color: #fff;
+}
+
+.sidebar-link .icono {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.sidebar-pie {
+  padding: var(--espacio-4);
+  border-top: 1px solid var(--color-sidebar-borde);
+  font-size: var(--texto-xs);
+}
+
+.sidebar-usuario {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-2);
+}
+
+.sidebar-usuario-nombre {
+  color: #fff;
+  font-weight: 600;
+  font-size: var(--texto-sm);
+}
+
+.sidebar-usuario-rol {
+  color: var(--color-texto-tenue);
+}
+
+/* --- Contenido --- */
+.contenido {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.contenido-header {
+  height: var(--alto-header);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--espacio-6);
+  background: var(--color-superficie);
+  border-bottom: 1px solid var(--color-borde);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.contenido-body {
+  flex: 1;
+  padding: var(--espacio-6);
+  max-width: 1400px;
+  width: 100%;
+}
+
+/* Responsive: sidebar colapsa en pantallas angostas */
+@media (max-width: 900px) {
+  .app-shell {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    padding: var(--espacio-2);
+  }
+  .sidebar-link {
+    white-space: nowrap;
+  }
+  .contenido-body {
+    padding: var(--espacio-4);
+  }
+}

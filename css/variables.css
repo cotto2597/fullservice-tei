@@ -1,0 +1,68 @@
+/* Tokens de diseño — Tecnologías e Insumos / Full Service
+   Paleta pensada para uso interno de local técnico: legible en turnos
+   largos, sin decoración innecesaria, un solo acento con intención. */
+
+:root {
+  /* Color base */
+  --color-fondo: #F5F4F1;
+  --color-superficie: #FFFFFF;
+  --color-superficie-hover: #EFEDE9;
+  --color-borde: #DEDAD3;
+
+  --color-texto: #211E1B;
+  --color-texto-suave: #6B655D;
+  --color-texto-tenue: #9A938A;
+
+  /* Barra lateral — gris pizarra oscuro */
+  --color-sidebar-fondo: #23262B;
+  --color-sidebar-texto: #C7C9CC;
+  --color-sidebar-texto-activo: #FFFFFF;
+  --color-sidebar-hover: #2E323A;
+  --color-sidebar-borde: #33373F;
+
+  /* Acento — cobre */
+  --color-acento: #C15A2E;
+  --color-acento-hover: #A84A24;
+  --color-acento-suave: #F3E1D6;
+
+  /* Estados semánticos */
+  --color-estado-pendiente: #B8860B;
+  --color-estado-pendiente-fondo: #FBF1DA;
+  --color-estado-proceso: #2563A8;
+  --color-estado-proceso-fondo: #DCEAF7;
+  --color-estado-terminado: #2E7D4F;
+  --color-estado-terminado-fondo: #DFF0E5;
+  --color-estado-entregado: #6B655D;
+  --color-estado-entregado-fondo: #ECEAE6;
+  --color-estado-inactivo: #B23B3B;
+  --color-estado-inactivo-fondo: #FBE2E2;
+
+  /* Tipografía */
+  --fuente-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --fuente-mono-numerica: "Inter", sans-serif;
+
+  --texto-xs: 0.75rem;
+  --texto-sm: 0.8125rem;
+  --texto-base: 0.9375rem;
+  --texto-md: 1.0625rem;
+  --texto-lg: 1.25rem;
+  --texto-xl: 1.75rem;
+
+  /* Espaciado */
+  --espacio-1: 4px;
+  --espacio-2: 8px;
+  --espacio-3: 12px;
+  --espacio-4: 16px;
+  --espacio-5: 24px;
+  --espacio-6: 32px;
+  --espacio-7: 48px;
+
+  /* Bordes y sombras */
+  --radio-sm: 6px;
+  --radio-md: 10px;
+  --sombra-menu: 0 4px 16px rgba(33, 30, 27, 0.12);
+
+  /* Layout */
+  --ancho-sidebar: 240px;
+  --alto-header: 64px;
+}
