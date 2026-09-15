@@ -2,12 +2,12 @@
 // Todo lo que pueda variar entre entornos o necesitar ajuste rápido vive acá.
 
 export const FIREBASE_CONFIG = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyCemkgHbzJ_J92U1OC-_xrO62EBJ7_WRA4",
+  authDomain: "fullservice-tei.firebaseapp.com",
+  projectId: "fullservice-tei",
+  storageBucket: "fullservice-tei.firebasestorage.app",
+  messagingSenderId: "974953998306",
+  appId: "1:974953998306:web:41d6ab8c7754131f5dbbbb"
 };
 
 export const EMPRESAS = {
