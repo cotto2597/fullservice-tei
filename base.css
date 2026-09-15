@@ -1,0 +1,75 @@
+/* Reset y tipografía base */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--fuente-base);
+  font-size: var(--texto-base);
+  color: var(--color-texto);
+  background: var(--color-fondo);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h1 { font-size: var(--texto-xl); }
+h2 { font-size: var(--texto-lg); }
+h3 { font-size: var(--texto-md); }
+
+p { margin: 0; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, select, textarea, button {
+  font-family: inherit;
+  font-size: var(--texto-base);
+}
+
+a {
+  color: var(--color-acento);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Cifras numéricas alineadas — importante en tablas de precios/stock */
+.numerico {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Foco visible siempre, por accesibilidad */
+:focus-visible {
+  outline: 2px solid var(--color-acento);
+  outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-borde);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
