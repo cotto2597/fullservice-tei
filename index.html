@@ -29,7 +29,10 @@
 
       <div class="campo">
         <label for="login-contrasena">Contraseña</label>
-        <input type="password" id="login-contrasena" required autocomplete="current-password" />
+        <div class="campo-contrasena">
+          <input type="password" id="login-contrasena" required autocomplete="current-password" />
+          <button type="button" id="boton-ver-contrasena" class="btn-ver-contrasena" title="Mostrar contraseña" aria-label="Mostrar contraseña">👁</button>
+        </div>
       </div>
 
       <p id="login-error" class="login-error" hidden></p>
@@ -42,10 +45,7 @@
   <div id="app-shell" class="app-shell" hidden>
     <aside class="sidebar">
       <div class="sidebar-marca">
-        <div>
-          <div class="sidebar-marca-nombre">InfoStock</div>
-          <div class="sidebar-marca-empresa" id="sidebar-empresa-nombre">—</div>
-        </div>
+        <div class="sidebar-marca-nombre" id="sidebar-empresa-nombre">—</div>
       </div>
 
       <nav class="sidebar-nav" id="sidebar-nav">
@@ -111,6 +111,28 @@
       color: var(--color-estado-inactivo);
       font-size: var(--texto-sm);
       margin-bottom: var(--espacio-3);
+    }
+    .campo-contrasena {
+      position: relative;
+      display: flex;
+    }
+    .campo-contrasena input {
+      flex: 1;
+      padding-right: 40px;
+    }
+    .btn-ver-contrasena {
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      font-size: 16px;
+      padding: var(--espacio-2);
+      opacity: 0.6;
+    }
+    .btn-ver-contrasena:hover {
+      opacity: 1;
     }
   </style>
 

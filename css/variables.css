@@ -20,10 +20,10 @@
   --color-sidebar-hover: #2E323A;
   --color-sidebar-borde: #33373F;
 
-  /* Acento — cobre */
-  --color-acento: #C15A2E;
-  --color-acento-hover: #A84A24;
-  --color-acento-suave: #F3E1D6;
+  /* Acento — rojo institucional (definido por Corcho) */
+  --color-acento: #B40303;
+  --color-acento-hover: #900202;
+  --color-acento-suave: #F4D9D9;
 
   /* Estados semánticos */
   --color-estado-pendiente: #B8860B;

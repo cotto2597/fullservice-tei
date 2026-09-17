@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+/* Fuerza que [hidden] siempre oculte el elemento, sin importar qué otras
+   clases tenga. Sin esto, una clase con "display: flex/grid/block" le gana
+   en prioridad al [hidden] del navegador y el elemento queda visible
+   igual — fue justo lo que pasaba con la pantalla de login sobre el shell
+   de la app (una clase .app-shell{display:flex} le ganaba a [hidden]). */
+[hidden] {
+  display: none !important;
+}
+
 html, body {
   margin: 0;
   padding: 0;

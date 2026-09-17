@@ -52,6 +52,15 @@ formLogin.addEventListener("submit", async (evento) => {
   }
 });
 
+document.getElementById("boton-ver-contrasena").addEventListener("click", (evento) => {
+  const input = document.getElementById("login-contrasena");
+  const boton = evento.currentTarget;
+  const seVaAMostrar = input.type === "password";
+  input.type = seVaAMostrar ? "text" : "password";
+  boton.textContent = seVaAMostrar ? "🙈" : "👁";
+  boton.title = seVaAMostrar ? "Ocultar contraseña" : "Mostrar contraseña";
+});
+
 document.getElementById("boton-cerrar-sesion").addEventListener("click", async () => {
   await cerrarSesion();
 });
@@ -130,7 +139,16 @@ async function despacharVistaActual() {
     await vista.render(contenedor, sesion);
   } catch (error) {
     console.error(error);
-    mostrarError("No se pudo cargar la sección. Probá de nuevo.");
+    contenedor.innerHTML = `
+      <div class="superficie estado-vacio">
+        <p><strong>No se pudo cargar esta sección.</strong></p>
+        <p style="margin-top: 8px; font-size: var(--texto-sm);">
+          Puede deberse a un problema de conexión o de configuración de la base de datos.
+          Si el problema persiste, revisá la consola del navegador (F12) y avisá al desarrollador.
+        </p>
+      </div>
+    `;
+    mostrarError("No se pudo cargar la sección.");
   }
 }
 
